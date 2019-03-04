@@ -32,15 +32,6 @@ CREATE TABLE `mdt_sessions` (
   `timestamp` mediumint(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `mdt_sessions`
---
-
-INSERT INTO `mdt_sessions` (`id`, `session_id`, `user_id`, `ip`, `timestamp`) VALUES
-(2, 'f5aos3n8mpf9830rosq59ctp8k', 1, '::1', 8388607),
-(3, 'tb3l8sk7jeskm08nagbgggpms9', 1, '::1', 8388607),
-(14, 'iovf81sg2lf0i10g118r91uld7', 1, '24.165.178.147', 8388607);
-
 -- --------------------------------------------------------
 
 --
@@ -66,7 +57,7 @@ CREATE TABLE `mdt_users` (
 --
 
 INSERT INTO `mdt_users` (`userid`, `first_name`, `surname`, `email`, `steamid`, `password`, `collar`, `groups`, `joindate`, `theme`, `last_ip`) VALUES
-(1, 'Change', 'Me', 'Changeme@gmail.com', '', '$2y$10$Hd6BbW4F4SNJv1wVq0o6xOHZpdPMoGYYpI.mtZVY3ntkfqveVre/i', '1234', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,', 1530222515, 2, '24.165.178.147');
+(1, 'Change', 'Me', 'Changeme@gmail.com', '', '$2y$10$.WY4s9XEo1e3Kzpva9GHBu5WYvbm14FNZhdexA9X1VN4plDcRhyke', '1234', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,', 1530222515, 2, '24.165.178.147');
 
 -- --------------------------------------------------------
 

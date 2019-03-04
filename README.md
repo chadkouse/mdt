@@ -16,7 +16,7 @@ Enjoy!
 Default Login Information:
 Username: 1234
 
-Password: changeme
+Password: password
 
 **Change Background image:**</br>
 go to mdtsystem/_assets/img/background-2.png to change the image.

@@ -34,10 +34,10 @@ body {
 <div class="container-fluid" style="margin-top: 25px;">
 	<div id="panicSection">
 		<?php
-		$nums = $con->query("SELECT * FROM units WHERE status = 'Panic'")->num_rows;
+		$nums = $con->query("SELECT * from mdt_units WHERE status = 'Panic'")->num_rows;
 
 		if($nums > 0){
-			$unit = mysqli_fetch_assoc($con->query("SELECT * FROM units WHERE status = 'Panic'"));
+			$unit = mysqli_fetch_assoc($con->query("SELECT * from mdt_units WHERE status = 'Panic'"));
 
 				echo '<audio src="./_assets/soundpack/panic.mp3"" autoplay control/></audio>';
 		?>

@@ -21,11 +21,11 @@ if($permCheck == false){
 <div class="container-fluid" style="margin-top: 25px;">
 	<div id="panicSection">
 		<?php
-		$num = $con->query("SELECT * FROM units WHERE status = 0")->num_rows;
+		$num = $con->query("SELECT * from mdt_units WHERE status = 0")->num_rows;
 
 			if($num > 0){
 
-				$unit = mysqli_fetch_assoc($con->query("SELECT * FROM units WHERE status = 0"));
+				$unit = mysqli_fetch_assoc($con->query("SELECT * from mdt_units WHERE status = 0"));
 		?>
 		<div class="row">
 			<div class="col-md-1"></div>

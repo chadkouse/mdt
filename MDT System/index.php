@@ -34,7 +34,7 @@ if($permCheck == false){
 						?>
 						<tr>
 							<td>
-								<?php echo $cad['id']; ?>
+                                <a href="intel-view-report.php?rid=<?php echo $cad['id']?>"><?php echo $cad['id']; ?></a>
 							</td>
 							<td>
 								<?php echo $cad['cad']; ?>
@@ -78,8 +78,7 @@ if($permCheck == false){
 								<?php echo $vehicleInfo['vehicle']; ?>
 							</td>
 							<td>
-								<?php echo $vehicleInfo['vrm']; ?>
-							</td>
+                                <a href="vrm-check.php?vid=<?php echo $vehicleInfo['vrm']; ?>"><?php echo $vehicleInfo['vrm']; ?></a>
 							<td>
 								<?php echo $voi['image']; ?>
 							</td>
@@ -118,7 +117,7 @@ if($permCheck == false){
 						?>
 						<tr>
 							<td>
-								<?php echo $civInfo['name']; ?>
+                                <a href="pnc-check.php?cid=<?php echo $civInfo['cid']; ?>"><?php echo $civInfo['name']; ?></a>
 							</td>
 							<td>
 								<?php echo $civInfo['address']; ?>

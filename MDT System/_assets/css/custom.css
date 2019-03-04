@@ -22,6 +22,9 @@ table {
     font-size: 14px !important;
     margin-bottom: 0 !important;
 }
+.table {
+    background-color: white;
+}
 
 hr {
     margin: 0 !important;

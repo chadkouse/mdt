@@ -28,7 +28,6 @@ if($permCheck == false){
 					<thead class="thead-light">
    						<tr>
    							<th scope="col">Reference</th>
-   							<th scope="col">Model</th>
 	     					<th scope="col">License Plate</th>
    							<th scope="col">Description</th>
    							<th scope="col">Reason</th>
@@ -43,7 +42,6 @@ if($permCheck == false){
 	  					?>
     					<tr>
     						<th scope="row"><?php echo $voi['id']; ?> <a href="./intel-vois-edit.php?voi=<?php echo $voi['id']; ?>"><i class="fa fa-pencil-alt"></i></a></th>
-    						<th><?php echo $vehicleInfo['vehicle']; ?></th>
     						<th><?php echo $vehicleInfo['vrm']; ?></th>
     						<td><?php echo $voi['image']; ?></td>
 	      					<td><?php echo $voi['reason']; ?></td>
@@ -64,7 +62,7 @@ if($permCheck == false){
 				<div class="card-body">
 					<?php
 						if(isset($_POST['createVoi'])) { 
-			  	  			createVoi($_POST['vehicle'],$_POST['image'],$_POST['reason'],$_POST['notes']);
+			  	  			createVoi($_POST['plate'],$_POST['image'],$_POST['reason'],$_POST['notes']);
                     ?>
                     <div class="alert alert-success"><b>BOLO Created</b> This BOLO has been created and is ready for use.</div>
                     <?php
@@ -72,18 +70,8 @@ if($permCheck == false){
 					?>
 					<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 						<div class="form-group col-md-12">
-                            <label for="channel">Vehicle</label>
-                            <select name="vehicle" class="form-control">
-                                <?php
-                                $vehicles = getVehicles();
-
-                                foreach($vehicles as $vehicle){
-                                ?>
-                                <option value="<?php echo $vehicle['vehicleid']; ?>"><?php echo $vehicle['vehicle']; ?> - <?php echo $vehicle['vrm']; ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
+                            <label for="channel">Plate</label>
+                            <input name="plate" class="form-control">
                         </div>
                         <div class="form-group col-md-12">
                             <label for="channel">Description</label>

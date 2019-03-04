@@ -82,7 +82,7 @@ $UserArray = getUserInfo($sessionArray['user_id']);
 					<?php
 						$permCheck = haveGeneralPerm($UserArray['userid'], 16);
 
-						if($permCheck == true){
+						if(FALSE && $permCheck == true){
 					?>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

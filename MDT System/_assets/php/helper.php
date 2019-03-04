@@ -163,9 +163,9 @@
 
 		$date = time();
 
-		$q = $con->query("INSERT INTO calls VALUES(NULL,'{$type}','{$location}','{$description}','Not Set','Not Set','Not Set','{$civilian}','1','{$date}')");
+		$q = $con->query("INSERT into mdt_calls VALUES(NULL,'{$type}','{$location}','{$description}','Not Set','Not Set','Not Set','{$civilian}','1','{$date}')");
 
-		$newCall = mysqli_fetch_assoc($con->query("SELECT * FROM calls WHERE `description` = '{$description}' AND `location` = '{$location}' AND `dateline` = '{$date}'"));
+		$newCall = mysqli_fetch_assoc($con->query("SELECT * FROM mdt_calls WHERE `description` = '{$description}' AND `location` = '{$location}' AND `dateline` = '{$date}'"));
 		newLogEntry($admin,"Has created the call " . $newCall['callid'] . ".","Calls");
 
 		return;
@@ -231,16 +231,6 @@
 	function getVehicleInfo($vehicleid)
 	{
 		global $con;
-//        CREATE TABLE `vehicles` (
-//    `vehicleid` bigint(20) NOT NULL,
-//  `vehicle` mediumtext NOT NULL,
-//  `vrm` mediumtext NOT NULL,
-//  `owner` bigint(20) NOT NULL,
-//  `status` mediumtext NOT NULL,
-//  `insurer` mediumtext NOT NULL,
-//  `insurance_number` mediumtext NOT NULL,
-//  `registered_drivers` mediumtext NOT NULL,
-//  `markers` mediumtext NOT NULL
 
 		$q = $con->query("SELECT owner, oname as registered_drivers, plate as vrm, '' as vehicle FROM owned_vehicles WHERE plate = '{$vehicleid}'");
 		$a = mysqli_fetch_assoc($q);
@@ -407,11 +397,11 @@
 	{
 		global $con;
 
-		$q = $con->query("SELECT * FROM civilians");
+		$q = $con->query("SELECT * FROM characters");
 		$civs = array();
 
 		while($a = mysqli_fetch_assoc($q)){
-			$civs[] = $a;
+			$civs[] = array("civid"=>$a["id"], "name" => $a["firstname"] . " " . $a["lastname"]);
 		}
 
 		return $civs;
@@ -484,11 +474,14 @@
 	{
 		global $con;
 
-		$q = $con->query("SELECT * FROM civilians WHERE civid = '{$id}'");
+		$q = $con->query("SELECT * FROM characters WHERE id = '{$id}'");
 
 		if($q->num_rows > 0){
 			$a = mysqli_fetch_assoc($q);
-			return $a;
+			return array("civid" => $a["id"],
+                "name" => $a['firstname'] . ' ' . $a['lastname'],
+                'dob' => $a['dateofbirth']
+                );
 		}else{
 			return false;
 		}
@@ -498,7 +491,7 @@
 	{
 		global $con;
 
-		$q = $con->query("SELECT * FROM units WHERE unitid = '{$unitid}'");
+		$q = $con->query("SELECT * from mdt_units WHERE unitid = '{$unitid}'");
 		$a = mysqli_fetch_assoc($q);
 
 		return $a;
@@ -508,7 +501,7 @@
 	{
 		global $con;
 
-		$q = $con->query("SELECT * FROM units WHERE collar = '{$collar}'");
+		$q = $con->query("SELECT * from mdt_units WHERE collar = '{$collar}'");
 
 		if($q->num_rows > 0){
 			$a = mysqli_fetch_assoc($q);
@@ -522,7 +515,7 @@
 	{
 		global $con;
 
-		$unitsq = $con->query("SELECT * FROM units WHERE callid = '{$callid}'");
+		$unitsq = $con->query("SELECT * from mdt_units WHERE callid = '{$callid}'");
 		$callUnits = array();
 
 		while ($unit = mysqli_fetch_assoc($unitsq)) {
@@ -540,7 +533,7 @@
 
 		$calls = array();
 
-		$q = $con->query("SELECT * FROM calls WHERE status = '4' ORDER BY callid DESC");
+		$q = $con->query("SELECT * FROM mdt_calls WHERE status = '4' ORDER BY callid DESC");
 
 		while($call = mysqli_fetch_assoc($q)){
 			$array = array(
@@ -571,9 +564,9 @@
 		$calls = array();
 
 		if($order == 'ASC'){
-			$q = $con->query("SELECT * FROM calls WHERE status != '4' ORDER BY callid ASC");
+			$q = $con->query("SELECT * FROM mdt_calls WHERE status != '4' ORDER BY callid ASC");
 		}else{
-			$q = $con->query("SELECT * FROM calls WHERE status != '4' ORDER BY callid DESC");
+			$q = $con->query("SELECT * FROM mdt_calls WHERE status != '4' ORDER BY callid DESC");
 		}
 
 		while($call = mysqli_fetch_assoc($q)){
@@ -602,7 +595,7 @@
 	{
 		global $con;
 
-		$q = $con->query("SELECT * FROM calls WHERE callid = '{$callid}'");
+		$q = $con->query("SELECT * FROM mdt_calls WHERE callid = '{$callid}'");
 		$call = mysqli_fetch_assoc($q);
 
 		$array = array(
@@ -635,7 +628,7 @@
 			}
 		}
 
-		$q = $con->query("UPDATE calls SET status = '{$status}' WHERE callid = '{$callid}'");
+		$q = $con->query("update mdt_calls SET status = '{$status}' WHERE callid = '{$callid}'");
 
 		return;
 	}
@@ -645,7 +638,7 @@
 		global $con;
 
 		$units = array();
-		$q = $con->query("SELECT * FROM units WHERE collar != ''");
+		$q = $con->query("SELECT * from mdt_units WHERE collar != ''");
 
 		while($a = mysqli_fetch_assoc($q)){
 			$units[] = $a;
@@ -679,7 +672,7 @@
 	{
 		global $con;
 
-		$q = $con->query("UPDATE units SET status = '{$status}' WHERE unitid = '{$unit}'");
+		$q = $con->query("update mdt_units SET status = '{$status}' WHERE unitid = '{$unit}'");
 
 		$unit = getUnitInfo($unit);
 		$message = $unit['unit'] . ' has updated their status to ' . $status . ' on log ' . $unit['callid'];
@@ -731,7 +724,7 @@
 	{
 		global $con;
 
-		$q = $con->query("SELECT * FROM units WHERE cat = '{$cat}' AND collar = ''");
+		$q = $con->query("SELECT * from mdt_units WHERE cat = '{$cat}' AND collar = ''");
 		$units = array();
 
 		while($a = mysqli_fetch_assoc($q)){
@@ -747,7 +740,7 @@
 
 		$userinfo = mysqli_fetch_assoc($con->query("SELECT * FROM mdt_users WHERE collar = '{$collar}'"));
 
-		$q = $con->query("INSERT INTO units VALUES(NULL,'{$unit}',0,2,'{$collar}','{$userinfo['steamid']}','')");
+		$q = $con->query("INSERT INTO mdt_units VALUES(NULL,'{$unit}',0,2,'{$collar}','{$userinfo['steamid']}','')");
 
 		return;
 	}
@@ -756,12 +749,12 @@
 	{
 		global $con;
 
-		$q = $con->query("UPDATE units SET callid = '{$callid}', status = '5' WHERE unitid = '{$unitid}'");
+		$q = $con->query("update mdt_units SET callid = '{$callid}', status = '5' WHERE unitid = '{$unitid}'");
 
-		$uq = $con->query("SELECT * FROM units WHERE unitid = '{$unitid}'");
+		$uq = $con->query("SELECT * from mdt_units WHERE unitid = '{$unitid}'");
 		$ua = mysqli_fetch_assoc($uq);
 
-		$cq = $con->query("SELECT * FROM calls WHERE callid = '{$callid}'");
+		$cq = $con->query("SELECT * FROM mdt_calls WHERE callid = '{$callid}'");
 		$ca = mysqli_fetch_assoc($cq);
 
 		sendMessage(strtoupper($ua['unit']), 'CONTROL', 'You have been attached to Log ' . $callid .', it is marked as a ' . $ca['police_grade'] . ' / ' . $ca['rmu_grade'] . ' call.');
@@ -776,7 +769,7 @@
 	{
 		global $con;
 
-		$q = $con->query("DELETE FROM units WHERE unitid = '{$unitid}'");
+		$q = $con->query("DELETE from mdt_units WHERE unitid = '{$unitid}'");
 
 		return;
 	}
@@ -787,7 +780,7 @@
 
 		$unit = getUnitInfo($unitid);
 
-		$q = $con->query("UPDATE units SET status = 2, callid = 0 WHERE unitid = '{$unitid}'");
+		$q = $con->query("update mdt_units SET status = 2, callid = 0 WHERE unitid = '{$unitid}'");
 
 		$message = $unit['unit'] . ' has been cleared from log ' . $unit['callid'];
 		newLogEntry('SYSTEM', $message, 'Patrol');
@@ -802,13 +795,13 @@
 		$unit = getUnitInfo($unitid);
 		$date = time();
 
-		$q = $con->query("INSERT INTO calls VALUES(NULL, 'Panic Button', 'Das {$unit['collar']}', 'Panic button activation by {$unit['unit']}', 'Grade 1', 'CAT 1', 'Not Set', '0', '3', '{$date}')");
+		$q = $con->query("INSERT into mdt_calls VALUES(NULL, 'Panic Button', 'Das {$unit['collar']}', 'Panic button activation by {$unit['unit']}', 'Grade 1', 'CAT 1', 'Not Set', '0', '3', '{$date}')");
 
-		$newq = $con->query("SELECT * FROM calls WHERE type = 'Panic Button' AND description = 'Panic button activation by {$unit['unit']}' AND status != 4 ORDER BY callid DESC LIMIT 1");
+		$newq = $con->query("SELECT * FROM mdt_calls WHERE type = 'Panic Button' AND description = 'Panic button activation by {$unit['unit']}' AND status != 4 ORDER BY callid DESC LIMIT 1");
 
 		$a = mysqli_fetch_assoc($newq);
 
-		$q3 = $con->query("UPDATE units SET callid = '{$a['callid']}', status = '6' WHERE unitid = '{$unitid}'");
+		$q3 = $con->query("update mdt_units SET callid = '{$a['callid']}', status = '6' WHERE unitid = '{$unitid}'");
 
 		$availableUnits = getAvailableUnits();
 
@@ -861,7 +854,7 @@
 	{
 		global $con;
 
-		$q = $con->query("UPDATE calls SET channel = '{$inc}', police_grade = '{$police_grade}', rmu_grade = '{$rmu_grade}' WHERE callid = '{$callid}'");
+		$q = $con->query("update mdt_calls SET channel = '{$inc}', police_grade = '{$police_grade}', rmu_grade = '{$rmu_grade}' WHERE callid = '{$callid}'");
 
 		return;
 	}
@@ -871,7 +864,7 @@
 		global $con;
 
 		$messages = array();
-		$q = $con->query("SELECT * FROM messages WHERE (recive = '{$unit}' OR post = '{$unit}') AND visible = 1 ORDER by messageid DESC LIMIT 7");
+		$q = $con->query("SELECT * FROM mdt_messages WHERE (recive = '{$unit}' OR post = '{$unit}') AND visible = 1 ORDER by messageid DESC LIMIT 7");
 
 		while($a = mysqli_fetch_assoc($q)){
 			$messages[] = $a;
@@ -1005,7 +998,7 @@
 	{
 		global $con;
 
-		$q = $con->query("INSERT INTO reports VALUES(NULL,'{$userid}','{$incident}','{$cad}','{$located}','{$otherUnits}','{$arrested}','{$person}','{$arrestedFor}','{$foundItems}','{$whatHappened}'," . time() . ")");
+		$q = $con->query("INSERT INTO mdt_reports VALUES(NULL,'{$userid}','{$incident}','{$cad}','{$located}','{$otherUnits}','{$arrested}','{$person}','{$arrestedFor}','{$foundItems}','{$whatHappened}'," . time() . ")");
 
 		return;
 	}
@@ -1082,16 +1075,16 @@
 	{
 		global $con;
 
-		$q = $con->query("SELECT * FROM units");
+		$q = $con->query("SELECT * from mdt_units");
 
 		while($a = mysqli_fetch_assoc($q)){
-			$q2 = $con->query("UPDATE units SET collar = '', steamid = '', callid = 0, status = 11 WHERE unitid = '{$a['unitid']}'");
+			$q2 = $con->query("update mdt_units SET collar = '', steamid = '', callid = 0, status = 11 WHERE unitid = '{$a['unitid']}'");
 		}
 
-		$q3 = $con->query("SELECT * FROM calls");
+		$q3 = $con->query("SELECT * FROM mdt_calls");
 
 		while($a3 = mysqli_fetch_assoc($q3)){
-			$q4 = $con->query("UPDATE calls SET status = 4 WHERE callid = '{$a3['callid']}'");
+			$q4 = $con->query("update mdt_calls SET status = 4 WHERE callid = '{$a3['callid']}'");
 		}
 
 		$logsQ = $con->query("UPDATE mdt_logs SET visible = 0 WHERE category = 'Patrol'");

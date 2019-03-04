@@ -35,6 +35,56 @@ CREATE TABLE `mdt_sessions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `mdt_units`
+--
+
+CREATE TABLE `mdt_units` (
+  `unitid` mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `unit` mediumtext NOT NULL,
+  `callid` mediumint(9) NOT NULL,
+  `status` mediumtext NOT NULL,
+  `collar` mediumtext NOT NULL,
+  `steamid` varchar(255) NOT NULL,
+  `location` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mdt_messages`
+--
+
+CREATE TABLE `mdt_messages` (
+  `messageid` mediumint(9) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `recive` mediumtext NOT NULL,
+  `post` mediumtext NOT NULL,
+  `content` mediumtext NOT NULL,
+  `dateline` bigint(20) NOT NULL,
+  `visible` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mdt_calls`
+--
+
+CREATE TABLE `mdt_calls` (
+  `callid` mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `type` mediumtext NOT NULL,
+  `location` mediumtext NOT NULL,
+  `description` mediumtext NOT NULL,
+  `police_grade` mediumtext NOT NULL,
+  `rmu_grade` mediumtext NOT NULL,
+  `channel` mediumtext NOT NULL,
+  `caller` mediumint(9) NOT NULL,
+  `status` mediumint(9) NOT NULL,
+  `dateline` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `mdt_users`
 --
 

@@ -48,22 +48,22 @@ if($permCheck == false OR !isset($_GET['vid'])){
 <!--                                <label for="channel">Status</label>-->
 <!--                                <input type="text" class="form-control" name="insurer" value="--><?php //echo $vehicleInfo['status']; ?><!--" disabled>-->
 <!--                            </div>-->
-                            <div class="form-group col-md-12">
-                                <label for="channel">Licenced Drivers</label>
-                                <div class="card custom-card">
-                                    <div class="card-body">
-                                        <?php
-                                        $drivers = getAllowedDriversForVehicle($vehicleInfo['vehicleid']);
-
-                                        foreach($drivers as $driver){
-                                        ?>
-                                        <a href="./vrm-check.php?vid=<?php echo $driver['civid']; ?>"><?php echo $driver['name']; ?></a><br>
-                                        <?php
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                            </div>
+<!--                            <div class="form-group col-md-12">-->
+<!--                                <label for="channel">Licenced Drivers</label>-->
+<!--                                <div class="card custom-card">-->
+<!--                                    <div class="card-body">-->
+<!--                                        --><?php
+//                                        $drivers = getAllowedDriversForVehicle($vehicleInfo['vehicleid']);
+//
+//                                        foreach($drivers as $driver){
+//                                        ?>
+<!--                                        <a href="./vrm-check.php?vid=--><?php //echo $driver['civid']; ?><!--">--><?php //echo $driver['name']; ?><!--</a><br>-->
+<!--                                        --><?php
+//                                        }
+//                                        ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                 </div>
             </div>
